@@ -7,8 +7,10 @@ import java.util.TreeMap;
 
 import edu.handong.analysis.datamodel.Course;
 import edu.handong.analysis.datamodel.Student;
-import edu.handong.analysise.utils.NotEnoughArgumentException;
-import edu.handong.analysise.utils.Utils;
+import edu.handong.analysis.utils.NotEnoughArgumentException;
+import edu.handong.analysis.utils.Utils;
+
+
 
 public class HGUCoursePatternAnalyzer {
 
@@ -53,11 +55,36 @@ public class HGUCoursePatternAnalyzer {
 	 * @return
 	 */
 	private HashMap<String,Student> loadStudentCourseRecords(ArrayList<String> lines) {
+
+		students = new HashMap<String, Student>();
+		
+		Student onestudent= new Student (lines.get(0).split(",")[0].trim());
+		
+		
+		for(String new_lines : lines) {
+			Course course = new Course(new_lines);
+			
+			if(onestudent.getStudentId().equals(course.getStudentId())){
+				
+				onestudent.addCourse(course);//Course수강한 과목들은 넣어주어야한다.
+				students.put(onestudent.getStudentId(),onestudent); 
+				
+			}else {
+				
+				onestudent = new Student(course.getStudentId());
+				onestudent.addCourse(course);
+			}
+			
+		}
+		
+		return students; // do not forget to return a proper variable.
+
 		
 		// TODO: Implement this method
-		
-		return null; // do not forget to return a proper variable.
+		//lines를 읽고 students에 알맞는 key값(studentId)과 Student 값을 넣어준다.
 	}
+	// 여기서 인스턴스를 만드려면 id 가 필요하지 Course 안에 있는 아이디 사용,코스 인스턴스 먼저 만들고 라인 첫번째 것 겟 겟 스튜
+	//코스. 겟 스튜던트 아이디. 
 
 	/**
 	 * This method generate the number of courses taken by a student in each semester. The result file look like this:
@@ -72,10 +99,43 @@ public class HGUCoursePatternAnalyzer {
 	 * @param sortedStudents
 	 * @return
 	 */
-	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
+
+	//sortedStudents를 받아서 필요한 정보만 ArrayList에 저장
+	
+private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		
-		// TODO: Implement this method
+		String first , last;
+		ArrayList<String> result = new ArrayList<String>();
+		result.add("StudentID, TotalNumberOfSemestersRegistered, Semester, NumCoursesTakenInTheSemester");
 		
-		return null; // do not forget to return a proper variable.
+		for (Student sort :sortedStudents.values()) {
+			first = sort.getStudentId() + "," + Integer.toString(sort.getSemestersByYearAndSemester().size());
+		
+
+			for(int i=1 ; i<= sort.getSemestersByYearAndSemester().size();i++) {
+				last = "," + Integer.toString(i) + "," + Integer.toString(sort.getNumCourseInNthSementer(i));
+				 
+				
+				result.add(first+last);
+				
+		}
+
+		}
+		
+		return result; // do not forget to return a proper variable.
 	}
+	
+	
+	
+//	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
+//		String result;
+//		
+//		for(Map.Entry<String, Student> stud : sortedStudents.entrySet()) {
+//			result = stud.getKey() + "," + stud.get(Map.getKey()).getSemestersByYearAndSemester().size();
+//			 
+//		}
+//		// TODO: Implement this method
+//		
+//		return null; // do not forget to return a proper variable.
+//	}
 }
