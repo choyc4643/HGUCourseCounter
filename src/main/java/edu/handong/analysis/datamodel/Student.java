@@ -86,7 +86,44 @@ public int getNumCourseInNthSementer(int semester) {
 		return this.studentId;
 	}
 
+
+	public boolean yearCheck(String year) {
+		int count=0;
+		for(Course c : coursesTaken) {
+			if(c.getYearTaken().equals(year))
+				count ++;
+		}
+		if(count > 0)
+			return true;
 		
+		// TODO Auto-generated method stub
+		return false;
 	}
+	
+	public boolean courseCodeCheck(String code) {
+		int count=0;
+		for(Course c : coursesTaken) {
+			if(c.getCourseCode().equals(code))
+				count ++;
+		}
+		if(count > 0)
+			return true;
+		
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public String getCourseName(String code) {
+		for(Course c : coursesTaken) {
+		if(c.getCourseCode().equals(code))
+			return c.getCourseName();
+	}
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+		
+}
 	/* field에 대한 getter setter 필요에 따라 추가 */
 
